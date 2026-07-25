@@ -444,4 +444,13 @@ contract TestVault is Test {
         vm.prank(owner);
         vault.setAgent(newAgent);
     }
+
+    function testSetAgentRevertsIfAddressZero() external {
+        address owner = address(this);
+        address newAgent = address(0);
+
+        vm.prank(owner);
+        vm.expectRevert(Vault.Vault__ZeroAddress.selector);
+        vault.setAgent(newAgent);
+    }
 }
