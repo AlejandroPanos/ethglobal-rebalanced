@@ -40,4 +40,12 @@ contract TestVault is Test {
     address agent = makeAddr("agent");
     address user = makeAddr("user");
     address otherUser = makeAddr("otherUser");
+
+    /// @notice Same events from the Vault contract
+    event Deposited(address indexed user, uint256 indexed assets, uint256 indexed shares);
+    event Withdrawn(address indexed user, uint256 indexed shares, uint256 indexed assets);
+    event Rebalanced(
+        uint8 indexed fromStrategy, uint8 indexed toStrategy, uint256 totalAssetsAtRebalance, string reason
+    );
+    event AgentUpdated(address indexed oldAgent, address indexed newAgent);
 }
