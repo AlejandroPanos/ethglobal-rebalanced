@@ -140,4 +140,10 @@ contract TestVault is Test {
         vm.prank(user);
         vault.deposit(100 ether);
     }
+
+    function testWithdrawRevertsIfSharesIsZero() external {
+        vm.prank(user);
+        vm.expectRevert(Vault.Vault__ZeroAmount.selector);
+        vault.withdraw(0);
+    }
 }
