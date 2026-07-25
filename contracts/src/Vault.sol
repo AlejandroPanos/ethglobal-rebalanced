@@ -46,6 +46,12 @@ contract Vault is ERC20, Ownable {
     /// @param shares The amount of vault shares minted to the user.
     event Deposited(address indexed user, uint256 indexed assets, uint256 indexed shares);
 
+    /// @notice Emitted when a user burns shares and withdraws assets.
+    /// @param user The withdrawer.
+    /// @param shares The amount of vault shares burned.
+    /// @param assets The amount of underlying asset returned to the user.
+    event Withdrawn(address indexed user, uint256 indexed shares, uint256 indexed assets);
+
     /*//////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////*/
