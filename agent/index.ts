@@ -1,0 +1,10 @@
+import { ethers } from "ethers";
+import { Client, PrivateKey, TopicMessageSubmitTransaction } from "@hiero-ledger/sdk";
+import { x402Client } from "@x402/core/client";
+import { createClientHederaSigner } from "@x402/hedera";
+import { ExactHederaScheme } from "@x402/hedera/exact/client";
+import { wrapFetchWithPayment } from "@x402/fetch";
+import * as dotenv from "dotenv";
+import * as fs from "fs";
+import * as path from "path";
+import { fileURLToPath } from "url";
