@@ -29,3 +29,22 @@ const server = new x402ResourceServer(facilitatorClient).register(
     },
   }),
 );
+
+// This routes object specifies which routes are payment protected. It states the account the payment should be made to,
+// the asset and the price. This is what is used to build the 402 response.
+const routes = {
+  "GET /yield-signal": {
+    accepts: {
+      scheme: "exact",
+      network: "hedera:testnet" as const,
+      payTo: PAY_TO,
+      price: {
+        asset: "0.0.0",
+        amount: PRICE_TINYBARS,
+      },
+    },
+  },
+};
+
+// Use the routes passing the predefined `paymentMiddleware` function and pass the routes and server as params.
+app.use(paymentMiddleware(routes, server));
