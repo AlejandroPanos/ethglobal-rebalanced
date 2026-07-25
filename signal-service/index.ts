@@ -17,3 +17,15 @@ const PRICE_TINYBARS = process.env.PRICE_TINYBARS!; // Price per request, in tin
 const facilitatorClient = new HTTPFacilitatorClient({
   url: "https://api.testnet.blocky402.com",
 });
+
+// Create a new resource server to register Hedera's x402 payment scheme.
+// `defaultAsset` tells it which asset to price in as default. We are using the Hedera testnet here and we are
+// telling it to work with tokens that have 8 decimal places (tinybars in this case).
+const server = new x402ResourceServer(facilitatorClient).register(
+  "hedera:*",
+  new ExactHederaScheme({
+    defaultAssets: {
+      "hedera:testnet": { asset: "0.0.0", decimals: 8 },
+    },
+  }),
+);
