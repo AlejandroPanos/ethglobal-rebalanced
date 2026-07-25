@@ -126,3 +126,17 @@ async function runAgentCycle() {
 
   console.log("Decision logged to HCS.");
 }
+
+// Wraps runAgentCycle() so that any failure is caught, logged, and does NOT crash the process
+// or stop the scheduled loop
+async function safeRunCycle() {
+  try {
+    await runAgentCycle();
+  } catch (err) {
+    console.error(
+      `[${new Date().toISOString()}] Agent cycle failed:`,
+      err instanceof Error ? err.message : err,
+    );
+    console.log("Will retry on next scheduled cycle.");
+  }
+}
