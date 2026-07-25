@@ -124,4 +124,12 @@ contract TestVault is Test {
         vm.expectRevert();
         vault.deposit(100 ether);
     }
+
+    function testDepositMintsCorrectShareBalance() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        assertEq(vault.balanceOf(user), 100 ether);
+        assertEq(vault.totalSupply(), 100 ether);
+    }
 }
