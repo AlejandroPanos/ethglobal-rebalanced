@@ -7,6 +7,18 @@ import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Vault is ERC20, Ownable {
+    using SafeERC20 for ERC20;
+
+    /*//////////////////////////////////////////////////////////
+                                ERRORS
+    //////////////////////////////////////////////////////////*/
+
+    error Vault__NotAgent();
+    error Vault__ZeroAmount();
+    error Vault__InsufficientShares();
+    error Vault__SameStrategy();
+    error Vault__ZeroAddress();
+
     /*//////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////*/
