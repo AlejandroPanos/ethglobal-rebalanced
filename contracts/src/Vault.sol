@@ -13,10 +13,15 @@ contract Vault is ERC20, Ownable {
                                 ERRORS
     //////////////////////////////////////////////////////////*/
 
+    /// @dev Thrown when a caller other than `s_agent` calls an agent-only function.
     error Vault__NotAgent();
+    /// @dev Thrown when `deposit` or `withdraw` is called with a zero amount.
     error Vault__ZeroAmount();
+    /// @dev Thrown when `withdraw` is called for more shares than the caller holds.
     error Vault__InsufficientShares();
+    /// @dev Thrown when `rebalance` is called with the strategy id already active.
     error Vault__SameStrategy();
+    /// @dev Thrown when owner tries to set agent to address(0)
     error Vault__ZeroAddress();
 
     /*//////////////////////////////////////////////////////////
