@@ -135,4 +135,21 @@ contract Vault is ERC20, Ownable {
 
         emit Withdrawn(msg.sender, shares, assets);
     }
+
+    /// @notice Records a strategy change decided by the off-chain agent.
+    /// @dev This prototype only records the decision on-chain (id + reason + snapshot of
+    ///      assets at the time). Actual fund movement between strategies (e.g. moving funds
+    ///      into a lending market) is a natural next step once a real yield source is chosen.
+    /// @param newStrategy The id of the strategy the agent is moving the vault into.
+    /// @param reason Human-readable explanation of the agent's decision, for the on-chain log.
+    function rebalance(uint8 newStrategy, string calldata reason) external onlyAgent {
+        if (newStrategy == s_currentStrategy) {
+            revert Vault__SameStrategy();
+        }
+
+        uint8 oldStrategy = s_currentStrategy;
+        s_currentStrategy = newStrategy;
+
+        emit Rebalanced(oldStrategy, newStrategy, totalAssets(), reason);
+    }
 }
