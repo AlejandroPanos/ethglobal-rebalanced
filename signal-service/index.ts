@@ -57,3 +57,41 @@ interface DefiLlamaPool {
   symbol: string;
   apy: number;
 }
+
+// This function holds majority of the project as it defines the service being sold. In this case is a real market
+// yield signal service that will compare two Uniswap pool pairs, one being very stable and the other being very volatile.
+// This will allow the agent to make decisions based on which yield is more interesting for the user to invest in.
+async function getRealYieldSignal(): Promise<{ strategy: number; reason: string }> {
+  const res = await fetch("https://yields.llama.fi/pools");
+  const data = await res.json();
+
+  // DefiLlama returns yield data for hundreds of pools. We only want to check for those that are in the Ethereum
+  // ecosystem and that are available on Uniswap.
+  const uniswapPools: DefiLlamaPool[] = data.data.filter(
+    (p: DefiLlamaPool) => p.project === "uniswap-v3" && p.chain === "Ethereum",
+  );
+
+  // We match a regex pattern to be able to fund the pools we are interested in.
+  const stablePool = uniswapPools.find((p) => /USDC-USDT|USDT-USDC/i.test(p.symbol));
+  const volatilePool = uniswapPools.find((p) => /USDC-WETH|WETH-USDC/i.test(p.symbol));
+
+  // App throws an error is the pools cannot be found inside of the API response.
+  if (!stablePool || !volatilePool) {
+    throw new Error("Could not find reference Uniswap pools in DefiLlama data");
+  }
+
+  // If the APY (Annual Percentage Yield) of the volatile pool exceeds that of the stable pool, we will return an object
+  // that will indicate the agent to move to the volatile strategy over the stable more conservative one.
+  if (volatilePool.apy > stablePool.apy) {
+    return {
+      strategy: 2,
+      reason: `Uniswap USDC-WETH pool APY (${volatilePool.apy.toFixed(2)}%) exceeds stable pool APY (${stablePool.apy.toFixed(2)}%)`,
+    };
+  }
+
+  // On the other hand, we tell the agent to go for the conservative strategy instead of the volatile strategy.
+  return {
+    strategy: 1,
+    reason: `Stable pool APY (${stablePool.apy.toFixed(2)}%) is more attractive than volatile pool APY (${volatilePool.apy.toFixed(2)}%)`,
+  };
+}
