@@ -473,4 +473,11 @@ contract TestVault is Test {
     function testTotalAssetsReturnsZeroWhenVaultIsEmpty() external view {
         assertEq(vault.totalAssets(), 0);
     }
+
+    function testTotalAssetsReflectsDepositedAmount() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        assertEq(vault.totalAssets(), 100 ether);
+    }
 }
