@@ -67,7 +67,7 @@ const fetchWithPayment = wrapFetchWithPayment(fetch, x402ClientInstance);
 // Calls the paid signal service. The payment happens inside of this function call and once the response is
 // received, the signal data is already present.
 async function getYieldSignal(): Promise<{ strategy: number; reason: string }> {
-  const response = await fetchWithPayment("http://localhost:3001/yield-signal");
+  const response = await fetchWithPayment(process.env.SIGNAL_SERVICE_URL!);
 
   if (!response.ok) {
     throw new Error(`Signal service request failed: ${response.status}`);
