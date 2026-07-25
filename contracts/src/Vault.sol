@@ -52,6 +52,15 @@ contract Vault is ERC20, Ownable {
     /// @param assets The amount of underlying asset returned to the user.
     event Withdrawn(address indexed user, uint256 indexed shares, uint256 indexed assets);
 
+    /// @notice Emitted when the agent records a strategy change.
+    /// @param fromStrategy The strategy id the vault is moving away from.
+    /// @param toStrategy The strategy id the vault is moving into.
+    /// @param totalAssetsAtRebalance Snapshot of `totalAssets()` at the moment of rebalance.
+    /// @param reason Human-readable explanation of why the agent made this decision.
+    event Rebalanced(
+        uint8 indexed fromStrategy, uint8 indexed toStrategy, uint256 totalAssetsAtRebalance, string reason
+    );
+
     /*//////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////*/
