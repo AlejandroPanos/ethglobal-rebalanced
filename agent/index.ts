@@ -30,3 +30,6 @@ const Strategy = {
   ConservativeLending: 1,
   AggressiveLending: 2,
 } as const;
+
+// The names given to the strategies.
+const StrategyNames = ["None", "ConservativeLending", "AggressiveLending"] as const;
