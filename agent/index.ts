@@ -22,3 +22,11 @@ const deployments = JSON.parse(
 
 // How often the agent runs its decision loop in miliseconds.
 const CYCLE_INTERVAL_MS = Number(process.env.CYCLE_INTERVAL_MS ?? 60000);
+
+// Object that mimics the Strategy enum in the Vault's contract. Node's native TS type-stripping prevents from reading
+// enums correctly. This is the workaround.
+const Strategy = {
+  None: 0,
+  ConservativeLending: 1,
+  AggressiveLending: 2,
+} as const;
