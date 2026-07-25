@@ -19,4 +19,6 @@ contract MockAsset is ERC20 {
     }
 }
 
+/// @notice A Vault that serves as a testing ground to test the functionality
+/// of the protocol.
 contract TestVault is Test {}
