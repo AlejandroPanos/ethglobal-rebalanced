@@ -55,3 +55,11 @@ const hederaSigner = createClientHederaSigner(
   PrivateKey.fromStringECDSA(process.env.AGENT_PRIVATE_KEY!),
   { network: "hedera:testnet" },
 );
+
+// Registers the Hedera payment scheme with a generic x402 client, then wraps in `wrapFetchWithPayments` so that
+// any request going through `fetchWithPayment` handles the whole 402 cycle (sign - pay - retry).
+const x402ClientInstance = new x402Client().register(
+  "hedera:*",
+  new ExactHederaScheme(hederaSigner),
+);
+const fetchWithPayment = wrapFetchWithPayment(fetch, x402ClientInstance);
