@@ -252,4 +252,15 @@ contract TestVault is Test {
         vm.expectRevert(); // Should revert with ERC20InsufficientBalance
         vault.withdraw(1_000 ether);
     }
+
+    function testWithdrawEmitsWithdrawnEvent() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        vm.expectEmit(true, true, true, true);
+        emit Withdrawn(user, 50 ether, 50 ether);
+
+        vm.prank(user);
+        vault.withdraw(50 ether);
+    }
 }
