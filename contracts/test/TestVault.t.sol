@@ -374,4 +374,17 @@ contract TestVault is Test {
         vm.prank(agent);
         vault.rebalance(toStrategy, reason);
     }
+
+    function testRebalanceDoesNotAffectUserShareBalances() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        uint8 toStrategy = uint8(Strategy.ConservativeLending);
+        string memory reason = "Yield opportunity detected";
+
+        vm.prank(agent);
+        vault.rebalance(toStrategy, reason);
+
+        assertEq(vault.balanceOf(user), 100 ether);
+    }
 }
