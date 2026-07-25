@@ -203,13 +203,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@hiero-ledger/sdk': 2.85.0
+
 importers:
 
   .:
     dependencies:
       '@hiero-ledger/sdk':
-        specifier: ^2.86.2
-        version: 2.86.2(bn.js@5.2.3)(supports-color@8.1.1)
+        specifier: 2.85.0
+        version: 2.85.0(bn.js@5.2.3)(react-native@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.8)(supports-color@8.1.1))(supports-color@8.1.1)
       '@x402/core':
         specifier: ^2.19.0
         version: 2.19.0
@@ -323,10 +326,6 @@ packages:
     resolution: {integrity: sha512-JXUj6PI0oqqzTGvKtzOkxtpsyPRNsrmhh41TtIz/zEB6J+AUiZZ0dxWzcMwO9Ns5rmSPuMdghlTbUuqIM48d3Q==}
     engines: {node: '>=12.10.0'}
 
-  '@grpc/grpc-js@1.12.7':
-    resolution: {integrity: sha512-Tugep4V4GCsN9dSAVkXoBWqJXDoH+NSXd50kFGsm7ZG1tBXFEAnLoxzkGUIksTrDjiaMwlpsbC24oWbESGHpIQ==}
-    engines: {node: '>=12.10.0'}
-
   '@grpc/proto-loader@0.7.15':
     resolution: {integrity: sha512-tMXdRCfYVixjuFK+Hk0Q1s38gV9zDiDJfWL3h1rv4Qc39oILCu1TRTDt7+fGUI8K4G1Fj125Hx/ru3azECWTyQ==}
     engines: {node: '>=6'}
@@ -334,15 +333,6 @@ packages:
 
   '@hiero-ledger/cryptography@1.19.0':
     resolution: {integrity: sha512-6CN34QzPGpegFpQGw1dI77N+75ICdLPSSpcBQ35tyKiNruh6KjE9L0R0th5kcn5sdFw8CwHOPwDQ4+HaSyW0Yw==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      expo-crypto: '*'
-    peerDependenciesMeta:
-      expo-crypto:
-        optional: true
-
-  '@hiero-ledger/cryptography@1.20.1':
-    resolution: {integrity: sha512-CGm49a84Z/Hext3UvsGP4jnUq/hoxIzdACbxgfEluhiZ43Z5PJAEh4h6Udsa+SRmMB8sdUbnRxiq67Sgj8FYbg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       expo-crypto: '*'
@@ -362,12 +352,6 @@ packages:
 
   '@hiero-ledger/sdk@2.85.0':
     resolution: {integrity: sha512-o9xmNHeIt7D2ZuetLTSJlrUI9S7dsEzaut61lOxIbne+9fDxGyYfkNrZaf65rOp2e/SltdwQMOseXyFXUdFqVg==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      bn.js: 5.2.3
-
-  '@hiero-ledger/sdk@2.86.2':
-    resolution: {integrity: sha512-Mxhc+pxrsMe8+74Zij3Y/YPgBx7IDqHCq7BwLS26SDrez5DPnHw0Lyl+O6UsrHwjSbuV+qlXlhXwXQgBXxqlXQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       bn.js: 5.2.3
@@ -409,10 +393,6 @@ packages:
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
 
-  '@noble/ciphers@1.2.1':
-    resolution: {integrity: sha512-rONPWMC7PeExE077uLE4oqWrZ1IvAfz3oH9LibVAcVCopJiA9R62uavnbEzdkVmJYI6M6Zgkbeb07+tWjlq2XA==}
-    engines: {node: ^14.21.3 || >=16}
-
   '@noble/curves@1.2.0':
     resolution: {integrity: sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==}
 
@@ -426,14 +406,6 @@ packages:
 
   '@noble/hashes@1.7.1':
     resolution: {integrity: sha512-B8XBPsn4vT/KJAGqDzbwztd+6Yte3P4V7iafm24bxgDe/mlRuK6xmWPuCNrKt2vDafZ8MfJLlchDG/vYafQEjQ==}
-    engines: {node: ^14.21.3 || >=16}
-
-  '@noble/hashes@1.7.2':
-    resolution: {integrity: sha512-biZ0NUSxyjLLqo6KxEJ1b+C2NAx0wtDoFvCaXHGgUkeHzf3Xc1xKumFKREuT7f7DARNZ/slvYUwFG6B0f2b6hQ==}
-    engines: {node: ^14.21.3 || >=16}
-
-  '@noble/hashes@1.8.0':
-    resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
 
   '@pinojs/redact@0.4.0':
@@ -524,12 +496,6 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
-
-  '@scure/base@1.2.4':
-    resolution: {integrity: sha512-5Yy9czTO47mqz+/J8GM6GIId4umdCk1wc1q8rKERQulIoc8VP9pzDcghv10Tl2E7R96ZUx/PhND3ESYUQX8NuQ==}
-
-  '@scure/bip32@1.6.2':
-    resolution: {integrity: sha512-t96EPDMbtGgtb7onKKqxRLfE5g05k7uHnHRM2xdE6BP/ZmxaLtPek4J4KfVn/90IQNrU1IOAqMgiDtUdtbe3nw==}
 
   '@sinclair/typebox@0.27.12':
     resolution: {integrity: sha512-hhyNJ+nbR6ZR7pToHvllEFun9TL0sbL+tk/ON75lo+Xas054uez98qRbsuNt7MBCyZKK4+8Yli/OAGZhmfBZ/g==}
@@ -1218,10 +1184,6 @@ packages:
     resolution: {integrity: sha512-oI+GC9iPxrQEr6wragljFKH46/r3rNsm6eg7F2fp6kBUMnf6/mesDRdBuF4gK+OyaKJ8N4C1B9s9cCeYdqFikg==}
     engines: {node: '>=12.0.0'}
 
-  protobufjs@8.6.6:
-    resolution: {integrity: sha512-RkLIhE+Tdc2Kpq1F4Uw6OnpAXPca7B+GSDov/GqGCqNBpVyDskQ9yReZfgM+C7xw9AAix873iQZXbBWXj6NzYQ==}
-    engines: {node: '>=12.0.0'}
-
   pump@3.0.4:
     resolution: {integrity: sha512-VS7sjc6KR7e1ukRFhQSY5LM2uBWAUPiOPa/A3mkKmiMwSmRFUITt0xuj+/lesgnCv+dPIEYlkzrcyXgquIHMcA==}
 
@@ -1680,15 +1642,10 @@ snapshots:
       '@grpc/proto-loader': 0.7.15
       '@js-sdsl/ordered-map': 4.4.2
 
-  '@grpc/grpc-js@1.12.7':
-    dependencies:
-      '@grpc/proto-loader': 0.7.15
-      '@js-sdsl/ordered-map': 4.4.2
-
   '@grpc/proto-loader@0.7.15':
     dependencies:
       lodash.camelcase: 4.3.0
-      long: 5.3.1
+      long: 5.3.2
       protobufjs: 7.6.5
       yargs: 17.7.3
 
@@ -1714,24 +1671,6 @@ snapshots:
       - react-native
       - supports-color
 
-  '@hiero-ledger/cryptography@1.20.1(supports-color@8.1.1)':
-    dependencies:
-      '@noble/ciphers': 1.2.1
-      '@noble/curves': 1.8.1
-      '@noble/hashes': 1.8.0
-      '@scure/base': 1.2.4
-      '@scure/bip32': 1.6.2
-      ansi-regex: 6.2.2
-      ansi-styles: 6.2.3
-      asn1js: 3.0.6
-      bignumber.js: 11.1.2
-      bn.js: 5.2.3
-      debug: 4.4.1(supports-color@8.1.1)
-      forge-light: 1.1.4
-      strip-ansi: 7.1.2
-    transitivePeerDependencies:
-      - supports-color
-
   '@hiero-ledger/proto@2.31.0(ansi-regex@6.2.2)(ansi-styles@6.2.3)(debug@4.4.1(supports-color@8.1.1))(protobufjs@8.0.1)(strip-ansi@7.1.2)':
     dependencies:
       ansi-regex: 6.2.2
@@ -1748,15 +1687,6 @@ snapshots:
       debug: 4.4.1(supports-color@8.1.1)
       long: 5.3.1
       protobufjs: 8.2.0
-      strip-ansi: 7.1.2
-
-  '@hiero-ledger/proto@2.31.0(ansi-regex@6.2.2)(ansi-styles@6.2.3)(debug@4.4.1(supports-color@8.1.1))(protobufjs@8.6.6)(strip-ansi@7.1.2)':
-    dependencies:
-      ansi-regex: 6.2.2
-      ansi-styles: 6.2.3
-      debug: 4.4.1(supports-color@8.1.1)
-      long: 5.3.1
-      protobufjs: 8.6.6
       strip-ansi: 7.1.2
 
   '@hiero-ledger/sdk@2.85.0(bn.js@5.2.3)(react-native@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.8)(supports-color@8.1.1))(supports-color@8.1.1)':
@@ -1783,32 +1713,6 @@ snapshots:
       - bufferutil
       - expo-crypto
       - react-native
-      - supports-color
-      - utf-8-validate
-
-  '@hiero-ledger/sdk@2.86.2(bn.js@5.2.3)(supports-color@8.1.1)':
-    dependencies:
-      '@grpc/grpc-js': 1.12.7
-      '@hiero-ledger/cryptography': 1.20.1(supports-color@8.1.1)
-      '@hiero-ledger/proto': 2.31.0(ansi-regex@6.2.2)(ansi-styles@6.2.3)(debug@4.4.1(supports-color@8.1.1))(protobufjs@8.6.6)(strip-ansi@7.1.2)
-      ansi-regex: 6.2.2
-      ansi-styles: 6.2.3
-      bignumber.js: 11.1.2
-      bn.js: 5.2.3
-      crypto-js: 4.2.0
-      debug: 4.4.1(supports-color@8.1.1)
-      ethers: 6.16.0
-      js-base64: 3.7.4
-      long: 5.3.1
-      pino: 10.1.0
-      pino-pretty: 13.0.0
-      protobufjs: 8.6.6
-      rfc4648: 1.5.3
-      strip-ansi: 7.1.2
-      utf8: 3.0.0
-    transitivePeerDependencies:
-      - bufferutil
-      - expo-crypto
       - supports-color
       - utf-8-validate
 
@@ -1858,8 +1762,6 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2': {}
 
-  '@noble/ciphers@1.2.1': {}
-
   '@noble/curves@1.2.0':
     dependencies:
       '@noble/hashes': 1.3.2
@@ -1871,10 +1773,6 @@ snapshots:
   '@noble/hashes@1.3.2': {}
 
   '@noble/hashes@1.7.1': {}
-
-  '@noble/hashes@1.7.2': {}
-
-  '@noble/hashes@1.8.0': {}
 
   '@pinojs/redact@0.4.0': {}
 
@@ -1967,14 +1865,6 @@ snapshots:
       nullthrows: 1.1.1
       react: 19.2.8
       react-native: 0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.8)(supports-color@8.1.1)
-
-  '@scure/base@1.2.4': {}
-
-  '@scure/bip32@1.6.2':
-    dependencies:
-      '@noble/curves': 1.8.1
-      '@noble/hashes': 1.7.2
-      '@scure/base': 1.2.4
 
   '@sinclair/typebox@0.27.12': {}
 
@@ -2766,10 +2656,6 @@ snapshots:
   protobufjs@8.2.0:
     dependencies:
       '@types/node': 26.1.1
-      long: 5.3.1
-
-  protobufjs@8.6.6:
-    dependencies:
       long: 5.3.2
 
   pump@3.0.4:

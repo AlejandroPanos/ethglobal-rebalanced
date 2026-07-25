@@ -1,2 +1,4 @@
 allowBuilds:
   protobufjs: false
+overrides:
+  "@hiero-ledger/sdk": "2.85.0"
