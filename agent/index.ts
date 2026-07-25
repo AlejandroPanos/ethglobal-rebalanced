@@ -75,3 +75,13 @@ async function getYieldSignal(): Promise<{ strategy: number; reason: string }> {
 
   return response.json();
 }
+
+// Submits a message to the agent's HCS topic.
+async function logDecisionToHcs(message: object) {
+  const tx = await new TopicMessageSubmitTransaction()
+    .setTopicId(process.env.HCS_TOPIC_ID!)
+    .setMessage(JSON.stringify(message))
+    .execute(hcsClient);
+
+  await tx.getReceipt(hcsClient);
+}
