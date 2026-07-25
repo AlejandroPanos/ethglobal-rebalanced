@@ -2,7 +2,7 @@ import { useCurrentStrategy } from "./hooks/useCurrentStrategy";
 import { useDecisionFeed } from "./hooks/useDecisionFeed";
 import { useWallet } from "./hooks/useWallet";
 import { useUserPosition } from "./hooks/useUserPosition";
-import { StrategyNames } from "./config";
+import { StrategyNames, formatStrategyName } from "./config";
 import { Navbar } from "./components/Navbar";
 import { StatCard } from "./components/StatCard";
 import { DecisionLog } from "./components/DecisionLog";
@@ -20,7 +20,7 @@ function App() {
   const lastDecision = decisions?.[0];
 
   return (
-    <div className="min-h-screen lg:overflow-hidden bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen lg:h-screen lg:overflow-hidden bg-slate-950 text-slate-100 flex flex-col">
       <Navbar
         network="Hedera Testnet"
         walletSlot={
@@ -38,13 +38,13 @@ function App() {
         <div className="shrink-0 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <StatCard
             label="Current Strategy"
-            value={currentStrategyName}
+            value={formatStrategyName(currentStrategyName)}
             sub={currentStrategyName === "AggressiveLending" ? "High risk" : undefined}
             subColor={currentStrategyName === "AggressiveLending" ? "red" : "slate"}
           />
           <StatCard
             label="Last Rebalance"
-            value={lastDecision ? lastDecision.toStrategy : "—"}
+            value={lastDecision ? formatStrategyName(lastDecision.toStrategy) : "—"}
             sub={lastDecision?.reason}
           />
         </div>
