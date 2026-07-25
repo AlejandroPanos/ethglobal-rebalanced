@@ -433,4 +433,15 @@ contract TestVault is Test {
 
         assertEq(vault.s_agent(), newAgent);
     }
+
+    function testSetAgentEmitsWhenNewAgentIsSet() external {
+        address owner = address(this);
+        address newAgent = makeAddr("newAgent");
+
+        vm.expectEmit(true, true, false, false);
+        emit AgentUpdated(agent, newAgent);
+
+        vm.prank(owner);
+        vault.setAgent(newAgent);
+    }
 }
