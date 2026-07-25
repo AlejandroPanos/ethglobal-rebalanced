@@ -17,6 +17,7 @@ interface PositionPanelProps {
 type TxState =
   | { status: "idle" }
   | { status: "pending"; label: string }
+  | { status: "success"; label: string; txHash: string }
   | { status: "error"; message: string };
 
 export function PositionPanel({
@@ -32,11 +33,26 @@ export function PositionPanel({
   const [amount, setAmount] = useState("");
   const [tx, setTx] = useState<TxState>({ status: "idle" });
 
+  const available = mode === "deposit" ? assetBalance : shares;
+  const parsedAmount = amount ? parseFloat(amount) : 0;
+  const availableNum = available ? parseFloat(available) : 0;
+  const exceedsBalance = amount !== "" && parsedAmount > availableNum;
+
   const needsApproval =
     mode === "deposit" &&
     allowance !== null &&
     amount !== "" &&
+    !exceedsBalance &&
     allowance < ethers.parseEther(amount || "0");
+
+  function showSuccess(label: string, txHash: string) {
+    setTx({ status: "success", label, txHash });
+    setTimeout(() => setTx({ status: "idle" }), 5000);
+  }
+
+  function handleMax() {
+    if (available) setAmount(available);
+  }
 
   async function handleApprove() {
     if (!signer) return;
@@ -52,7 +68,7 @@ export function PositionPanel({
       });
       await approveTx.wait();
       setTx({ status: "idle" });
-      onActionComplete(); // refreshes allowance, which flips the button to "Deposit"
+      onActionComplete();
     } catch (err) {
       setTx({ status: "error", message: err instanceof Error ? err.message : "Approval failed" });
     }
@@ -63,17 +79,20 @@ export function PositionPanel({
     try {
       setTx({ status: "pending", label: mode === "deposit" ? "Depositing..." : "Withdrawing..." });
       const vaultWithSigner = new ethers.Contract(VAULT_ADDRESS, VaultAbi, signer);
-      const parsedAmount = ethers.parseEther(amount);
+      const parsedWei = ethers.parseEther(amount);
 
       const txResult =
         mode === "deposit"
-          ? await vaultWithSigner.deposit(parsedAmount, { gasLimit: 300000 })
-          : await vaultWithSigner.withdraw(parsedAmount, { gasLimit: 300000 });
+          ? await vaultWithSigner.deposit(parsedWei, { gasLimit: 300000 })
+          : await vaultWithSigner.withdraw(parsedWei, { gasLimit: 300000 });
 
-      await txResult.wait();
-      setTx({ status: "idle" });
+      const receipt = await txResult.wait();
       setAmount("");
       onActionComplete();
+      showSuccess(
+        mode === "deposit" ? `Deposited ${amount} mUSD` : `Withdrew ${amount} mUSD`,
+        receipt.hash,
+      );
     } catch (err) {
       setTx({
         status: "error",
@@ -124,16 +143,49 @@ export function PositionPanel({
         <span>Wallet balance: {assetBalance ?? "—"} mUSD</span>
       </div>
 
-      <input
-        type="number"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        placeholder="0.0"
-        className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-lg font-mono text-slate-100 mb-3 outline-none focus:border-cyan-400/50"
-      />
+      <div className="relative mb-3">
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="0.0"
+          className={`w-full bg-slate-950 border rounded-lg pl-4 pr-16 py-3 text-lg font-mono text-slate-100 outline-none transition ${
+            exceedsBalance
+              ? "border-red-500/50 focus:border-red-500/50"
+              : "border-slate-800 focus:border-cyan-400/50"
+          }`}
+        />
+        <button
+          onClick={handleMax}
+          disabled={!available}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono uppercase px-2 py-1 rounded bg-slate-800 text-slate-400 hover:text-slate-200 transition disabled:opacity-40"
+        >
+          Max
+        </button>
+      </div>
+
+      {exceedsBalance && (
+        <p className="text-xs font-mono text-red-400 mb-3">
+          Amount exceeds your {mode === "deposit" ? "wallet balance" : "share balance"}.
+        </p>
+      )}
 
       {tx.status === "error" && (
         <p className="text-xs font-mono text-red-400 mb-3 wrap-break-word">{tx.message}</p>
+      )}
+
+      {tx.status === "success" && (
+        <p className="text-xs font-mono text-emerald-400 mb-3">
+          ✓ {tx.label} —{" "}
+          <a
+            href={`https://hashscan.io/testnet/transaction/${tx.txHash}`}
+            target="_blank"
+            rel="noreferrer"
+            className="underline hover:text-emerald-300"
+          >
+            view tx ↗
+          </a>
+        </p>
       )}
 
       {!isCorrectNetwork ? (
@@ -151,7 +203,7 @@ export function PositionPanel({
       ) : (
         <button
           onClick={handleSubmit}
-          disabled={tx.status === "pending" || !amount}
+          disabled={tx.status === "pending" || !amount || exceedsBalance}
           className="w-full py-3 rounded-lg bg-cyan-400/10 border border-cyan-400/30 text-cyan-400 text-sm font-mono uppercase hover:bg-cyan-400/20 transition disabled:opacity-50"
         >
           {tx.status === "pending" ? tx.label : mode === "deposit" ? "Deposit" : "Withdraw"}
