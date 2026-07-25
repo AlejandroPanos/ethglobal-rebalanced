@@ -297,4 +297,18 @@ contract TestVault is Test {
         vm.expectRevert(Vault.Vault__NotAgent.selector);
         vault.rebalance(uint8(Strategy.AggressiveLending), "Yield oportunity detected");
     }
+
+    function testRebalanceEmitsWhenCalledByAgent() external {
+        vm.prank(agent);
+        vault.rebalance(uint8(Strategy.ConservativeLending), "Initial allocation");
+
+        uint8 toStrategy = uint8(Strategy.AggressiveLending);
+        string memory reason = "Yield opportunity detected";
+
+        vm.expectEmit(true, true, false, true);
+        emit Rebalanced(uint8(Strategy.ConservativeLending), toStrategy, vault.totalAssets(), reason);
+
+        vm.prank(agent);
+        vault.rebalance(toStrategy, reason);
+    }
 }
