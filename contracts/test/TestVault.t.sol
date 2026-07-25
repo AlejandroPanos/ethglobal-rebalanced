@@ -311,4 +311,16 @@ contract TestVault is Test {
         vm.prank(agent);
         vault.rebalance(toStrategy, reason);
     }
+
+    function testRebalanceRevertsIfNewStrategyEqualsCurrentStrategy() external {
+        vm.prank(agent);
+        vault.rebalance(uint8(Strategy.ConservativeLending), "Initial allocation");
+
+        uint8 toStrategy = uint8(Strategy.ConservativeLending);
+        string memory reason = "Yield opportunity detected";
+
+        vm.prank(agent);
+        vm.expectRevert(Vault.Vault__SameStrategy.selector);
+        vault.rebalance(toStrategy, reason);
+    }
 }
