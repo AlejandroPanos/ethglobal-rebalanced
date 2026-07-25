@@ -146,3 +146,14 @@ console.log(`Agent starting — running every ${CYCLE_INTERVAL_MS / 1000}s. Pres
 // Run a cycle immediately after start-up
 safeRunCycle();
 const intervalId = setInterval(safeRunCycle, CYCLE_INTERVAL_MS);
+
+// Function that ensures Ctrl+C (SIGINT) or a process manager's stop signal (SIGTERM) stops the process fully.
+function shutdown() {
+  console.log("\nShutting down agent...");
+  clearInterval(intervalId);
+  hcsClient.close();
+  process.exit(0);
+}
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
