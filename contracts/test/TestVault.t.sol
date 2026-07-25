@@ -241,4 +241,15 @@ contract TestVault is Test {
         assertEq(assets, 40 ether); // 1:1 ratio so assets should be 40 ether
         assertEq(asset.balanceOf(user), userBalanceBefore + 40 ether);
     }
+
+    function testRevertsIfVaultHasInsufficientAssetBalance() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        deal(address(vault), user, 1_000 ether, false);
+
+        vm.prank(user);
+        vm.expectRevert(); // Should revert with ERC20InsufficientBalance
+        vault.withdraw(1_000 ether);
+    }
 }
