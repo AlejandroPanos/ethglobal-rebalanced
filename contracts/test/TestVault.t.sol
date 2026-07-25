@@ -165,4 +165,20 @@ contract TestVault is Test {
 
         assertEq(assets, 100 ether);
     }
+
+    function testUsesCorrectAssetRatioWhenVaultValueIncreased() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        asset.mint(address(vault), 100 ether);
+
+        vm.prank(otherUser);
+        uint256 shares = vault.deposit(50 ether); // Supply is 100 -> Ratio for this user = 25 shares
+
+        vm.prank(otherUser);
+        uint256 assets = vault.withdraw(shares);
+        assertEq(assets, 50 ether);
+        assertEq(vault.balanceOf(user), 100 ether);
+        assertEq(vault.balanceOf(otherUser), 0 ether);
+    }
 }
