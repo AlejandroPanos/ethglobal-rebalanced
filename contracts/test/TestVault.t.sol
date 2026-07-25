@@ -132,4 +132,12 @@ contract TestVault is Test {
         assertEq(vault.balanceOf(user), 100 ether);
         assertEq(vault.totalSupply(), 100 ether);
     }
+
+    function testEmitsAfterDeposit() external {
+        vm.expectEmit(true, true, true, true);
+        emit Vault.Deposited(user, 100 ether, 100 ether);
+
+        vm.prank(user);
+        vault.deposit(100 ether);
+    }
 }
