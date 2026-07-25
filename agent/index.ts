@@ -8,3 +8,8 @@ import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as path from "path";
 import { fileURLToPath } from "url";
+
+dotenv.config();
+
+// __dirname is not available in ESM, so it must be reconstructed using import.meta.url
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
