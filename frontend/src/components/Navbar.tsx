@@ -16,7 +16,7 @@ export function Navbar({ network }: { network: string }) {
       <div className="flex items-center gap-2 sm:gap-4 text-xs font-mono text-slate-400">
         <span className="flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="hidden sm:inline">LIVE</span>
+          <span className="inline">LIVE</span>
         </span>
         <span className="text-slate-600 hidden sm:inline">{network}</span>
       </div>
