@@ -413,4 +413,12 @@ contract TestVault is Test {
 
         assertEq(asset.balanceOf(address(vault)), 100 ether);
     }
+
+    function testSetAgentRevertsIfNotCalledByOwner() external {
+        address newAgent = makeAddr("newAgent");
+
+        vm.prank(user);
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, user));
+        vault.setAgent(newAgent);
+    }
 }
