@@ -421,4 +421,16 @@ contract TestVault is Test {
         vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, user));
         vault.setAgent(newAgent);
     }
+
+    function testNewAgentGetsSetCorrectly() external {
+        address owner = address(this);
+        address newAgent = makeAddr("newAgent");
+
+        assertEq(vault.s_agent(), agent);
+
+        vm.prank(owner);
+        vault.setAgent(newAgent);
+
+        assertEq(vault.s_agent(), newAgent);
+    }
 }
