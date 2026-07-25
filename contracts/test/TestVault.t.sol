@@ -62,4 +62,11 @@ contract TestVault is Test {
         vm.prank(otherUser);
         asset.approve(address(vault), type(uint256).max);
     }
+
+    function testDepositRevertsIfAssetsIsZero() external {
+        uint256 assets = 0;
+        vm.prank(user);
+        vm.expectRevert(Vault.Vault__ZeroAmount.selector);
+        vault.deposit(assets);
+    }
 }
