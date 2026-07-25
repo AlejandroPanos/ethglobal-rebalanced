@@ -146,4 +146,13 @@ contract TestVault is Test {
         vm.expectRevert(Vault.Vault__ZeroAmount.selector);
         vault.withdraw(0);
     }
+
+    function testWithdrawRevertsIfBalanceBelowShares() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        vm.prank(user);
+        vm.expectRevert(Vault.Vault__InsufficientShares.selector);
+        vault.withdraw(200 ether);
+    }
 }
