@@ -1,0 +1,12 @@
+{
+  "network": "hedera-testnet",
+  "chainId": 296,
+  "asset": {
+    "address": "0x12CA0486F3BfC2e368c62FD4447dB35AdcF7535a",
+    "name": "MinimalERC20"
+  },
+  "vault": {
+    "address": "0x103c8c4f1d136403FebE89a60d6896CE491eB593",
+    "name": "Vault"
+  }
+}
