@@ -25,6 +25,18 @@ contract Vault is ERC20, Ownable {
     error Vault__ZeroAddress();
 
     /*//////////////////////////////////////////////////////////
+                              MODIFIERS
+    //////////////////////////////////////////////////////////*/
+
+    /// @dev Restricts a function to be called only by the current agent address.
+    modifier onlyAgent() {
+        if (msg.sender != s_agent) {
+            revert Vault__NotAgent();
+        }
+        _;
+    }
+
+    /*//////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////*/
 
