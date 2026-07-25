@@ -166,4 +166,14 @@ contract Vault is ERC20, Ownable {
         s_agent = newAgent;
         emit AgentUpdated(old, newAgent);
     }
+
+    /*//////////////////////////////////////////////////////////
+                           PUBLIC VIEW FUNCTIONS
+    //////////////////////////////////////////////////////////*/
+
+    /// @notice Returns the total amount of underlying asset currently held by the vault.
+    /// @return The vault's balance of `i_asset`.
+    function totalAssets() public view returns (uint256) {
+        return i_asset.balanceOf(address(this));
+    }
 }
