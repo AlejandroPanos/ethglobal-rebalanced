@@ -46,3 +46,12 @@ const hcsClient = Client.forTestnet().setOperator(
   process.env.AGENT_ACCOUNT_ID!,
   PrivateKey.fromStringECDSA(process.env.AGENT_PRIVATE_KEY!),
 );
+
+// --- x402 side: pays the signal service per request ---
+// A third identity/client setup for the same underlying account, this time configured specifically for signing
+// Hedera's "exact" x402 payment scheme.
+const hederaSigner = createClientHederaSigner(
+  process.env.AGENT_ACCOUNT_ID!,
+  PrivateKey.fromStringECDSA(process.env.AGENT_PRIVATE_KEY!),
+  { network: "hedera:testnet" },
+);
