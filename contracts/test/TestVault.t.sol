@@ -21,4 +21,23 @@ contract MockAsset is ERC20 {
 
 /// @notice A Vault that serves as a testing ground to test the functionality
 /// of the protocol.
-contract TestVault is Test {}
+contract TestVault is Test {
+    /// @notice The Vault contract to be deployed.
+    Vault public vault;
+
+    /// @notice The mock ERC20 token to deploy with the vault.
+    MockAsset public asset;
+
+    /// @notice The three different types of strategy available in the vault.
+    /// @dev Default strategy is going to be None.
+    /// @dev The agent changes strategy based on market signals.
+    enum Strategy {
+        None,
+        ConservativeLending,
+        AggressiveLending
+    }
+
+    address agent = makeAddr("agent");
+    address user = makeAddr("user");
+    address otherUser = makeAddr("otherUser");
+}
