@@ -104,4 +104,15 @@ contract TestVault is Test {
         assertEq(vault.balanceOf(user), 100 ether);
         assertEq(vault.balanceOf(otherUser), 100 ether);
     }
+
+    function testDepositTransfersAssetsFromUserToVault() external {
+        uint256 userBalanceBefore = asset.balanceOf(user);
+        uint256 vaultBalanceBefore = asset.balanceOf(address(vault));
+
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        assertEq(asset.balanceOf(user), userBalanceBefore - 100 ether);
+        assertEq(asset.balanceOf(address(vault)), vaultBalanceBefore + 100 ether);
+    }
 }
