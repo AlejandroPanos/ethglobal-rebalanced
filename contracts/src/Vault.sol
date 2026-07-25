@@ -115,4 +115,24 @@ contract Vault is ERC20, Ownable {
 
         emit Deposited(msg.sender, assets, shares);
     }
+
+    /// @notice Burns vault shares and returns the underlying asset to the caller.
+    /// @param shares The amount of vault shares to burn.
+    /// @return assets The amount of underlying asset returned to the caller.
+    function withdraw(uint256 shares) external returns (uint256 assets) {
+        if (shares == 0) {
+            revert Vault__ZeroAmount();
+        }
+
+        if (balanceOf(msg.sender) < shares) {
+            revert Vault__InsufficientShares();
+        }
+
+        assets = _convertToAssets(shares);
+
+        _burn(msg.sender, shares);
+        i_asset.safeTransfer(msg.sender, assets);
+
+        emit Withdrawn(msg.sender, shares, assets);
+    }
 }
