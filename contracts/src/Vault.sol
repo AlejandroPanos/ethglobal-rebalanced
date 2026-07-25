@@ -176,4 +176,32 @@ contract Vault is ERC20, Ownable {
     function totalAssets() public view returns (uint256) {
         return i_asset.balanceOf(address(this));
     }
+
+    /*//////////////////////////////////////////////////////////
+                          INTERNAL FUNCTIONS
+    //////////////////////////////////////////////////////////*/
+
+    /// @dev Converts an amount of assets into the equivalent amount of shares,
+    ///      using the vault's asset-to-share ratio BEFORE the assets are added.
+    /// @param assets The amount of underlying asset to convert.
+    /// @return The equivalent amount of vault shares.
+    function _convertToShares(uint256 assets) internal view returns (uint256) {
+        uint256 supply = totalSupply();
+        if (supply == 0) {
+            return assets;
+        }
+        return (assets * supply) / totalAssets();
+    }
+
+    /// @dev Converts an amount of shares into the equivalent amount of assets,
+    ///      using the vault's current asset-to-share ratio.
+    /// @param shares The amount of vault shares to convert.
+    /// @return The equivalent amount of underlying asset.
+    function _convertToAssets(uint256 shares) internal view returns (uint256) {
+        uint256 supply = totalSupply();
+        if (supply == 0) {
+            return shares;
+        }
+        return (shares * totalAssets()) / supply;
+    }
 }
