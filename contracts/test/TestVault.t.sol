@@ -453,4 +453,20 @@ contract TestVault is Test {
         vm.expectRevert(Vault.Vault__ZeroAddress.selector);
         vault.setAgent(newAgent);
     }
+
+    function testOldAgentCannotCallRebalanceAfterAgentIsUpdated() external {
+        address newAgent = makeAddr("newAgent");
+
+        vm.prank(address(this));
+        vault.setAgent(newAgent);
+
+        vm.prank(agent);
+        vm.expectRevert(Vault.Vault__NotAgent.selector);
+        vault.rebalance(uint8(Strategy.ConservativeLending), "Yield opportunity detected");
+
+        vm.prank(newAgent);
+        vault.rebalance(uint8(Strategy.ConservativeLending), "Yield opportunity detected");
+
+        assertEq(vault.s_currentStrategy(), uint8(Strategy.ConservativeLending));
+    }
 }
