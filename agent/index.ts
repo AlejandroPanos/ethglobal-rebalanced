@@ -33,3 +33,8 @@ const Strategy = {
 
 // The names given to the strategies.
 const StrategyNames = ["None", "ConservativeLending", "AggressiveLending"] as const;
+
+// --- EVM side: talks to the Vault contract via Hedera's JSON-RPC relay ---
+const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+const wallet = new ethers.Wallet(process.env.AGENT_PRIVATE_KEY!, provider);
+const vault = new ethers.Contract(deployments.vault.address, VaultAbi, wallet);
