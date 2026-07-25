@@ -291,4 +291,10 @@ contract TestVault is Test {
         assertEq(vault.balanceOf(user), 0);
         assertEq(vault.totalSupply(), 0);
     }
+
+    function testRebalanceRevertsIfCallerIsNotAgent() external {
+        vm.prank(user);
+        vm.expectRevert(Vault.Vault__NotAgent.selector);
+        vault.rebalance(uint8(Strategy.AggressiveLending), "Yield oportunity detected");
+    }
 }
