@@ -95,3 +95,14 @@ async function getRealYieldSignal(): Promise<{ strategy: number; reason: string 
     reason: `Stable pool APY (${stablePool.apy.toFixed(2)}%) is more attractive than volatile pool APY (${volatilePool.apy.toFixed(2)}%)`,
   };
 }
+
+// By the time this handler runs, paymentMiddleware has already confirmed payment was made and settled.
+// This code only runs if the payment has been made.
+app.get("/yield-signal", (req, res) => {
+  getRealYieldSignal()
+    .then((signal) => res.json(signal))
+    .catch((err) => {
+      console.error("Failed to fetch real yield data:", err);
+      res.status(502).json({ error: "Could not retrieve yield data" });
+    });
+});
