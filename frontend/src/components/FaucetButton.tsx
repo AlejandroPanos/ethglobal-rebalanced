@@ -9,43 +9,62 @@ interface FaucetButtonProps {
   onMinted: () => void;
 }
 
-const FAUCET_AMOUNT = ethers.parseEther("1000"); // 1,000 mUSD per claim
+type Status =
+  | { state: "idle" }
+  | { state: "pending" }
+  | { state: "success"; txHash: string }
+  | { state: "error" };
+
+const FAUCET_AMOUNT = ethers.parseEther("1000");
 
 export function FaucetButton({ address, signer, isCorrectNetwork, onMinted }: FaucetButtonProps) {
-  const [status, setStatus] = useState<"idle" | "pending" | "error">("idle");
+  const [status, setStatus] = useState<Status>({ state: "idle" });
 
   async function handleClaim() {
     if (!signer || !address) return;
     try {
-      setStatus("pending");
+      setStatus({ state: "pending" });
       const assetWithSigner = new ethers.Contract(
         import.meta.env.VITE_ASSET_ADDRESS,
         ERC20_ABI,
         signer,
       );
       const tx = await assetWithSigner.mint(address, FAUCET_AMOUNT, { gasLimit: 100000 });
-      await tx.wait();
-      setStatus("idle");
+      const receipt = await tx.wait();
       onMinted();
+      setStatus({ state: "success", txHash: receipt.hash });
+      setTimeout(() => setStatus({ state: "idle" }), 5000);
     } catch (err) {
       console.error("Faucet claim failed:", err);
-      setStatus("error");
+      setStatus({ state: "error" });
     }
   }
 
   if (!address || !isCorrectNetwork) return null;
 
   return (
-    <button
-      onClick={handleClaim}
-      disabled={status === "pending"}
-      className="text-xs font-mono px-3 py-1.5 rounded-lg bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 transition disabled:opacity-50"
-    >
-      {status === "pending"
-        ? "Minting..."
-        : status === "error"
-          ? "Failed — try again"
-          : "Get 1,000 mUSD"}
-    </button>
+    <div className="flex flex-col items-end gap-1">
+      <button
+        onClick={handleClaim}
+        disabled={status.state === "pending"}
+        className="text-xs font-mono px-3 py-1.5 rounded-lg bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 transition disabled:opacity-50"
+      >
+        {status.state === "pending"
+          ? "Minting..."
+          : status.state === "error"
+            ? "Failed — try again"
+            : "Get 1,000 mUSD"}
+      </button>
+      {status.state === "success" && (
+        <a
+          href={`https://hashscan.io/testnet/transaction/${status.txHash}`}
+          target="_blank"
+          rel="noreferrer"
+          className="text-[10px] font-mono text-emerald-400 underline hover:text-emerald-300"
+        >
+          ✓ minted — view tx ↗
+        </a>
+      )}
+    </div>
   );
 }
