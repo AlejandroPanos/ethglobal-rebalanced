@@ -18,4 +18,9 @@ contract MinimalERC20 is ERC20 {
     }
 }
 
+/// @title DeployVault
+/// @notice Foundry deployment script for the Vault contract and its underlying mock asset.
+/// @dev Deploys a fresh MinimalERC20 as the vault's asset, deploys the Vault itself
+///      wired to that asset and to an agent address read from the environment, then
+///      mints an initial supply of mock USD to the deployer for testing deposits.
 contract DeployVault is Script {}
