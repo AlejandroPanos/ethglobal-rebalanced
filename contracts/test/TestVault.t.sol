@@ -92,4 +92,16 @@ contract TestVault is Test {
         assertEq(vault.balanceOf(user), 100 ether);
         assertEq(vault.balanceOf(otherUser), 25 ether);
     }
+
+    function testUsesCorrectRatioWhenVaultValueUnchanged() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        vm.prank(otherUser);
+        uint256 shares = vault.deposit(100 ether);
+
+        assertEq(shares, 100 ether);
+        assertEq(vault.balanceOf(user), 100 ether);
+        assertEq(vault.balanceOf(otherUser), 100 ether);
+    }
 }
