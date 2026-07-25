@@ -348,4 +348,19 @@ contract TestVault is Test {
 
         assertEq(vault.s_currentStrategy(), toStrategy);
     }
+
+    function testRebalanceEventIncludesCorrectTotalAssetsSnapshot() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        uint8 fromStrategy = uint8(Strategy.None);
+        uint8 toStrategy = uint8(Strategy.ConservativeLending);
+        string memory reason = "Yield opportunity detected";
+
+        vm.expectEmit(true, true, false, true);
+        emit Rebalanced(fromStrategy, toStrategy, vault.totalAssets(), reason);
+
+        vm.prank(agent);
+        vault.rebalance(toStrategy, reason);
+    }
 }
