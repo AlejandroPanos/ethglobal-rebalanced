@@ -193,4 +193,16 @@ contract TestVault is Test {
         uint256 assets = vault.withdraw(shares);
         assertEq(assets, 100 ether);
     }
+
+    function testPartialWithdrawReturnsProportionalAssets() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        vm.prank(otherUser);
+        vault.deposit(100 ether);
+
+        vm.prank(otherUser);
+        uint256 assets = vault.withdraw(50 ether); // Assets should be = 50
+        assertEq(assets, 50 ether);
+    }
 }
