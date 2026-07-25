@@ -335,4 +335,17 @@ contract TestVault is Test {
 
         assertEq(vault.s_currentStrategy(), toStrategy);
     }
+
+    function testRebalanceUpdatesCurrentStrategy() external {
+        vm.prank(agent);
+        vault.rebalance(uint8(Strategy.ConservativeLending), "Initial allocation");
+
+        uint8 toStrategy = uint8(Strategy.AggressiveLending);
+        string memory reason = "Yield opportunity detected";
+
+        vm.prank(agent);
+        vault.rebalance(toStrategy, reason);
+
+        assertEq(vault.s_currentStrategy(), toStrategy);
+    }
 }
