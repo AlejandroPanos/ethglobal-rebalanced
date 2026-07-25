@@ -48,4 +48,18 @@ contract TestVault is Test {
         uint8 indexed fromStrategy, uint8 indexed toStrategy, uint256 totalAssetsAtRebalance, string reason
     );
     event AgentUpdated(address indexed oldAgent, address indexed newAgent);
+
+    function setUp() external {
+        asset = new MockAsset();
+        vault = new Vault(address(asset), agent);
+
+        asset.mint(user, 1_000 ether);
+        asset.mint(otherUser, 1_000 ether);
+
+        vm.prank(user);
+        asset.approve(address(vault), type(uint256).max);
+
+        vm.prank(otherUser);
+        asset.approve(address(vault), type(uint256).max);
+    }
 }
