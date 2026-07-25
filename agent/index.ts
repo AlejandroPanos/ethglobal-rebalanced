@@ -19,3 +19,6 @@ const VaultAbi = JSON.parse(fs.readFileSync(path.join(__dirname, "../abis/Vault.
 const deployments = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../deployments.json"), "utf-8"),
 );
+
+// How often the agent runs its decision loop in miliseconds.
+const CYCLE_INTERVAL_MS = Number(process.env.CYCLE_INTERVAL_MS ?? 60000);
