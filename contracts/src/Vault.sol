@@ -10,7 +10,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 /// @author Alejandro Paños Jimenez
 /// @notice Holds user deposits and lets an authorized off-chain agent record strategy changes.
 contract Vault is ERC20, Ownable {
-    using SafeERC20 for ERC20;
+    using SafeERC20 for IERC20;
 
     /*//////////////////////////////////////////////////////////
                                 ERRORS
