@@ -24,9 +24,15 @@ contract MinimalERC20 is ERC20 {
 ///      wired to that asset and to an agent address read from the environment, then
 ///      mints an initial supply of mock USD to the deployer for testing deposits.
 contract DeployVault is Script {
+    /// @notice The deployed Vault instance, set once `run()` executes.
     Vault vault;
+
+    /// @notice The deployed mock asset instance, set once `run()` executes.
     MinimalERC20 asset;
 
+    /// @notice Deploys the mock asset and the Vault, then mints initial test funds.
+    /// @dev Reads the agent's address from the `AGENT_ADDRESS` environment variable —
+    ///      this must be set (e.g. via a `.env` file) before running the script.
     function run() external {
         address agent = vm.envAddress("AGENT_ADDRESS");
         vm.startBroadcast();
