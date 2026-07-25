@@ -115,4 +115,13 @@ contract TestVault is Test {
         assertEq(asset.balanceOf(user), userBalanceBefore - 100 ether);
         assertEq(asset.balanceOf(address(vault)), vaultBalanceBefore + 100 ether);
     }
+
+    function testRevertWhenUserIsNotApproved() external {
+        address notApproved = makeAddr("notApproved");
+        asset.mint(notApproved, 1_000 ether);
+
+        vm.prank(notApproved);
+        vm.expectRevert();
+        vault.deposit(100 ether);
+    }
 }
