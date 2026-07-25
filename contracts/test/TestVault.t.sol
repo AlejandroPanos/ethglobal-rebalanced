@@ -205,4 +205,15 @@ contract TestVault is Test {
         uint256 assets = vault.withdraw(50 ether); // Assets should be = 50
         assertEq(assets, 50 ether);
     }
+
+    function testWithdrawBurnsCorrectShareAmount() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        vm.prank(user);
+        vault.withdraw(50 ether);
+
+        assertEq(vault.balanceOf(user), 50 ether);
+        assertEq(vault.totalSupply(), 50 ether);
+    }
 }
