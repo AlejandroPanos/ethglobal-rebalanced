@@ -277,4 +277,18 @@ contract TestVault is Test {
         assertEq(vault.balanceOf(user), 50 ether);
         assertEq(vault.balanceOf(otherUser), 100 ether);
     }
+
+    function testDepositThenWithdrawFullAmountReturnsOriginalAssets() external {
+        uint256 userBalanceBefore = asset.balanceOf(user);
+
+        vm.startPrank(user);
+        vault.deposit(100 ether);
+        uint256 assets = vault.withdraw(100 ether);
+        vm.stopPrank();
+
+        assertEq(assets, 100 ether);
+        assertEq(asset.balanceOf(user), userBalanceBefore);
+        assertEq(vault.balanceOf(user), 0);
+        assertEq(vault.totalSupply(), 0);
+    }
 }
