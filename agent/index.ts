@@ -13,3 +13,9 @@ dotenv.config();
 
 // __dirname is not available in ESM, so it must be reconstructed using import.meta.url
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Read the Vault's ABI and the deployment data directly from the files.
+const VaultAbi = JSON.parse(fs.readFileSync(path.join(__dirname, "../abis/Vault.json"), "utf-8"));
+const deployments = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "../deployments.json"), "utf-8"),
+);
