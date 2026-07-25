@@ -140,3 +140,9 @@ async function safeRunCycle() {
     console.log("Will retry on next scheduled cycle.");
   }
 }
+
+console.log(`Agent starting — running every ${CYCLE_INTERVAL_MS / 1000}s. Press Ctrl+C to stop.`);
+
+// Run a cycle immediately after start-up
+safeRunCycle();
+const intervalId = setInterval(safeRunCycle, CYCLE_INTERVAL_MS);
