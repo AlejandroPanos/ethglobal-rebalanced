@@ -387,4 +387,17 @@ contract TestVault is Test {
 
         assertEq(vault.balanceOf(user), 100 ether);
     }
+
+    function testRebalanceDoesNotAffectTotalSupply() external {
+        vm.prank(user);
+        vault.deposit(100 ether); // Total supply is 100
+
+        uint8 toStrategy = uint8(Strategy.ConservativeLending);
+        string memory reason = "Yield opportunity detected";
+
+        vm.prank(agent);
+        vault.rebalance(toStrategy, reason);
+
+        assertEq(vault.totalSupply(), 100 ether);
+    }
 }
