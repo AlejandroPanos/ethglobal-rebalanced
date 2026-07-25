@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 export function Navbar({ network, walletSlot }: { network: string; walletSlot: ReactNode }) {
   return (
-    <nav className="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur shrink-0">
+    <nav className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur shrink-0">
       <div className="max-w-5xl mx-auto flex items-center justify-between px-4 sm:px-8 py-3 sm:py-4">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center text-cyan-400 font-mono text-sm">

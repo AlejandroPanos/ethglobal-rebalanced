@@ -20,7 +20,7 @@ function App() {
   const lastDecision = decisions?.[0];
 
   return (
-    <div className="min-h-screen lg:h-screen lg:overflow-hidden bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen lg:overflow-hidden bg-slate-950 text-slate-100 flex flex-col">
       <Navbar
         network="Hedera Testnet"
         walletSlot={
