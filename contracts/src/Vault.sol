@@ -93,4 +93,26 @@ contract Vault is ERC20, Ownable {
         i_asset = IERC20(asset);
         s_agent = agent;
     }
+
+    /*//////////////////////////////////////////////////////////
+                          EXTERNAL FUNCTIONS
+    //////////////////////////////////////////////////////////*/
+
+    /// @notice Deposits the underlying asset and mints vault shares to the caller.
+    /// @dev Shares are priced against assets held BEFORE this deposit, matching standard
+    ///      vault share accounting (the same approach OpenZeppelin's ERC4626 uses).
+    /// @param assets The amount of underlying asset to deposit.
+    /// @return shares The amount of vault shares minted to the caller.
+    function deposit(uint256 assets) external returns (uint256 shares) {
+        if (assets == 0) {
+            revert Vault__ZeroAmount();
+        }
+
+        shares = _convertToShares(assets);
+
+        i_asset.safeTransferFrom(msg.sender, address(this), assets);
+        _mint(msg.sender, shares);
+
+        emit Deposited(msg.sender, assets, shares);
+    }
 }
