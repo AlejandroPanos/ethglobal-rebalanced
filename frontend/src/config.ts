@@ -25,3 +25,7 @@ export const MIRROR_NODE_URL = import.meta.env.VITE_MIRROR_NODE_URL;
 export const HCS_TOPIC_ID = import.meta.env.VITE_HCS_TOPIC_ID;
 
 export const StrategyNames = ["None", "ConservativeLending", "AggressiveLending"] as const;
+
+export function formatStrategyName(name: string): string {
+  return name.replace(/([a-z])([A-Z])/g, "$1 $2");
+}
