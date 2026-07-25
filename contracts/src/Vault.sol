@@ -152,4 +152,18 @@ contract Vault is ERC20, Ownable {
 
         emit Rebalanced(oldStrategy, newStrategy, totalAssets(), reason);
     }
+
+    /// @notice Rotates the address authorized to call `rebalance`.
+    /// @notice Checks for zero address.
+    /// @dev Owner-only. Useful for swapping in a new agent wallet during testing or after a key rotation.
+    /// @param newAgent The new address to authorize as the agent.
+    function setAgent(address newAgent) external onlyOwner {
+        if (newAgent == address(0)) {
+            revert Vault__ZeroAddress();
+        }
+
+        address old = s_agent;
+        s_agent = newAgent;
+        emit AgentUpdated(old, newAgent);
+    }
 }
