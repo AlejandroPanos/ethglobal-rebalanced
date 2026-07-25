@@ -38,3 +38,11 @@ const StrategyNames = ["None", "ConservativeLending", "AggressiveLending"] as co
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 const wallet = new ethers.Wallet(process.env.AGENT_PRIVATE_KEY!, provider);
 const vault = new ethers.Contract(deployments.vault.address, VaultAbi, wallet);
+
+// --- Native Hedera side: talks to Hedera Consensus Service (HCS) ---
+// Hedera cannot go through ethers.js as the HCS is not an EVM-native concept. It needs the native Hedera SDK to be
+// able to work properly.
+const hcsClient = Client.forTestnet().setOperator(
+  process.env.AGENT_ACCOUNT_ID!,
+  PrivateKey.fromStringECDSA(process.env.AGENT_PRIVATE_KEY!),
+);
