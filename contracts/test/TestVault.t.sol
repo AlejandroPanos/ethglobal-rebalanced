@@ -480,4 +480,10 @@ contract TestVault is Test {
 
         assertEq(vault.totalAssets(), 100 ether);
     }
+
+    function testTotalAssetsReflectsDirectTransfersNotJustDeposits() external {
+        asset.mint(address(vault), 50 ether);
+
+        assertEq(vault.totalAssets(), 50 ether);
+    }
 }
