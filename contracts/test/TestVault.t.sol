@@ -400,4 +400,17 @@ contract TestVault is Test {
 
         assertEq(vault.totalSupply(), 100 ether);
     }
+
+    function testRebalanceDoesNotMoveVaultAssetBalance() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        uint8 toStrategy = uint8(Strategy.ConservativeLending);
+        string memory reason = "Yield opportunity detected";
+
+        vm.prank(agent);
+        vault.rebalance(toStrategy, reason);
+
+        assertEq(asset.balanceOf(address(vault)), 100 ether);
+    }
 }
