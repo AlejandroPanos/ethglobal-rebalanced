@@ -323,4 +323,16 @@ contract TestVault is Test {
         vm.expectRevert(Vault.Vault__SameStrategy.selector);
         vault.rebalance(toStrategy, reason);
     }
+
+    function testRebalanceFromZeroStrategyToAnotherUpdatesCorrectly() external {
+        uint8 toStrategy = uint8(Strategy.AggressiveLending);
+        string memory reason = "Yield opportunity detected";
+
+        assertEq(vault.s_currentStrategy(), uint8(Strategy.None));
+
+        vm.prank(agent);
+        vault.rebalance(toStrategy, reason);
+
+        assertEq(vault.s_currentStrategy(), toStrategy);
+    }
 }
