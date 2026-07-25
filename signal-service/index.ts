@@ -106,3 +106,7 @@ app.get("/yield-signal", (req, res) => {
       res.status(502).json({ error: "Could not retrieve yield data" });
     });
 });
+
+app.listen(PORT, () => {
+  console.log(`Signal service listening on port ${PORT}`);
+});
