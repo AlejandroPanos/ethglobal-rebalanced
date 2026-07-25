@@ -48,3 +48,12 @@ const routes = {
 
 // Use the routes passing the predefined `paymentMiddleware` function and pass the routes and server as params.
 app.use(paymentMiddleware(routes, server));
+
+// Define the shape each pool retrieved from DefiLlama will have to then be able to specify the type when
+// retrieving them from the API.
+interface DefiLlamaPool {
+  project: string;
+  chain: string;
+  symbol: string;
+  apy: number;
+}
