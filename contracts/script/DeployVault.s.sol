@@ -23,4 +23,16 @@ contract MinimalERC20 is ERC20 {
 /// @dev Deploys a fresh MinimalERC20 as the vault's asset, deploys the Vault itself
 ///      wired to that asset and to an agent address read from the environment, then
 ///      mints an initial supply of mock USD to the deployer for testing deposits.
-contract DeployVault is Script {}
+contract DeployVault is Script {
+    Vault vault;
+    MinimalERC20 asset;
+
+    function run() external {
+        address agent = vm.envAddress("AGENT_ADDRESS");
+        vm.startBroadcast();
+        asset = new MinimalERC20();
+        vault = new Vault(address(asset), agent);
+        asset.mint(msg.sender, 1_000_000 ether);
+        vm.stopBroadcast();
+    }
+}
