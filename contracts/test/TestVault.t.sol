@@ -263,4 +263,18 @@ contract TestVault is Test {
         vm.prank(user);
         vault.withdraw(50 ether);
     }
+
+    function testWithdrawDoesNotAffectOtherUsersShareBalance() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        vm.prank(otherUser);
+        vault.deposit(100 ether);
+
+        vm.prank(user);
+        vault.withdraw(50 ether);
+
+        assertEq(vault.balanceOf(user), 50 ether);
+        assertEq(vault.balanceOf(otherUser), 100 ether);
+    }
 }
