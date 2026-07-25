@@ -216,4 +216,16 @@ contract TestVault is Test {
         assertEq(vault.balanceOf(user), 50 ether);
         assertEq(vault.totalSupply(), 50 ether);
     }
+
+    function testWithdrawUpdatesTotalSupplyCorrectly() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        assertEq(vault.totalSupply(), 100 ether);
+
+        vm.prank(user);
+        vault.withdraw(40 ether);
+
+        assertEq(vault.totalSupply(), 60 ether);
+    }
 }
