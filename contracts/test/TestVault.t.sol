@@ -228,4 +228,17 @@ contract TestVault is Test {
 
         assertEq(vault.totalSupply(), 60 ether);
     }
+
+    function testWithdrawTransfersCorrectAssetAmountToUser() external {
+        vm.prank(user);
+        vault.deposit(100 ether);
+
+        uint256 userBalanceBefore = asset.balanceOf(user);
+
+        vm.prank(user);
+        uint256 assets = vault.withdraw(40 ether);
+
+        assertEq(assets, 40 ether); // 1:1 ratio so assets should be 40 ether
+        assertEq(asset.balanceOf(user), userBalanceBefore + 40 ether);
+    }
 }
