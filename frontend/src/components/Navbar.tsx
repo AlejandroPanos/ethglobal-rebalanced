@@ -1,7 +1,9 @@
-export function Navbar({ network }: { network: string }) {
+import type { ReactNode } from "react";
+
+export function Navbar({ network, walletSlot }: { network: string; walletSlot: ReactNode }) {
   return (
     <nav className="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur shrink-0">
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-8 py-3 sm:py-4">
+      <div className="max-w-5xl mx-auto flex items-center justify-between px-4 sm:px-8 py-3 sm:py-4">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center text-cyan-400 font-mono text-sm">
             R
@@ -14,12 +16,13 @@ export function Navbar({ network }: { network: string }) {
           </span>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-4 text-xs font-mono text-slate-400">
-          <span className="flex items-center gap-1.5">
+        <div className="flex items-center gap-3">
+          <span className="hidden sm:flex items-center gap-1.5 text-xs font-mono text-slate-400">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="inline">LIVE</span>
+            LIVE
+            <span className="text-slate-600">· {network}</span>
           </span>
-          <span className="text-slate-600 hidden sm:inline">{network}</span>
+          {walletSlot}
         </div>
       </div>
     </nav>
