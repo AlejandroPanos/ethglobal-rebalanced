@@ -37,6 +37,16 @@ contract Vault is ERC20, Ownable {
     }
 
     /*//////////////////////////////////////////////////////////
+                                EVENTS
+    //////////////////////////////////////////////////////////*/
+
+    /// @notice Emitted when a user deposits assets and receives shares.
+    /// @param user The depositor.
+    /// @param assets The amount of underlying asset deposited.
+    /// @param shares The amount of vault shares minted to the user.
+    event Deposited(address indexed user, uint256 indexed assets, uint256 indexed shares);
+
+    /*//////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////*/
 
