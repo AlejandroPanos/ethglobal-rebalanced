@@ -363,4 +363,15 @@ contract TestVault is Test {
         vm.prank(agent);
         vault.rebalance(toStrategy, reason);
     }
+
+    function testRebalanceEventIncludesCorrectReasonString() external {
+        uint8 toStrategy = uint8(Strategy.AggressiveLending);
+        string memory reason = "Oracle reports better yield elsewhere";
+
+        vm.expectEmit(true, true, false, true);
+        emit Rebalanced(uint8(Strategy.None), toStrategy, vault.totalAssets(), reason);
+
+        vm.prank(agent);
+        vault.rebalance(toStrategy, reason);
+    }
 }
