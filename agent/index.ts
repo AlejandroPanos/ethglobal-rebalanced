@@ -85,3 +85,44 @@ async function logDecisionToHcs(message: object) {
 
   await tx.getReceipt(hcsClient);
 }
+
+// One full decision cycle: check the vault's current state, ask the signal service what it recommends,
+// and act accordingly.
+async function runAgentCycle() {
+  const runTime = new Date().toISOString();
+  console.log(`\n[${runTime}] Starting agent cycle...`);
+
+  // Reads contract's current state
+  const currentStrategy: number = Number(await vault.s_currentStrategy());
+  const signal = await getYieldSignal();
+
+  console.log(`Current strategy: ${StrategyNames[currentStrategy]}`);
+  console.log(`Signal suggests: ${StrategyNames[signal.strategy]} — ${signal.reason}`);
+
+  // Decide based on the signal and the current strategy if the strategy should be changed.
+  if (signal.strategy === currentStrategy) {
+    console.log("No rebalance needed — strategy unchanged.");
+    return;
+  }
+
+  console.log(
+    `Rebalancing from ${StrategyNames[currentStrategy]} to ${StrategyNames[signal.strategy]}...`,
+  );
+
+  // A real signed txn.
+  const tx = await vault.rebalance(signal.strategy, signal.reason);
+  const receipt = await tx.wait();
+
+  console.log("Rebalance confirmed on-chain:", receipt.hash);
+
+  // Only log to HCS once the decision has been made and confirmed on-chain.
+  await logDecisionToHcs({
+    timestamp: runTime,
+    fromStrategy: StrategyNames[currentStrategy],
+    toStrategy: StrategyNames[signal.strategy],
+    reason: signal.reason,
+    txHash: receipt.hash,
+  });
+
+  console.log("Decision logged to HCS.");
+}
