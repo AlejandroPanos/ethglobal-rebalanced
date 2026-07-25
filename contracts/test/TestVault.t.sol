@@ -469,4 +469,8 @@ contract TestVault is Test {
 
         assertEq(vault.s_currentStrategy(), uint8(Strategy.ConservativeLending));
     }
+
+    function testTotalAssetsReturnsZeroWhenVaultIsEmpty() external view {
+        assertEq(vault.totalAssets(), 0);
+    }
 }
