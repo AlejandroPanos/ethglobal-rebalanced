@@ -61,6 +61,11 @@ contract Vault is ERC20, Ownable {
         uint8 indexed fromStrategy, uint8 indexed toStrategy, uint256 totalAssetsAtRebalance, string reason
     );
 
+    /// @notice Emitted when the owner rotates the authorized agent address.
+    /// @param oldAgent The previous agent address.
+    /// @param newAgent The new agent address.
+    event AgentUpdated(address indexed oldAgent, address indexed newAgent);
+
     /*//////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////*/
