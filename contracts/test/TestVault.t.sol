@@ -69,4 +69,13 @@ contract TestVault is Test {
         vm.expectRevert(Vault.Vault__ZeroAmount.selector);
         vault.deposit(assets);
     }
+
+    function testFirstDepositSharesAreEqualToAssets() external {
+        vm.prank(user);
+        uint256 shares = vault.deposit(100 ether);
+
+        assertEq(shares, 100 ether);
+        assertEq(vault.balanceOf(user), 100 ether);
+        assertEq(vault.totalSupply(), 100 ether);
+    }
 }
